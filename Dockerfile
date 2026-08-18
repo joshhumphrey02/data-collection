@@ -9,8 +9,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 make g++ openssl ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-COPY package.json package-lock.json* bun.lock* ./
-RUN npm install --no-audit --no-fund
+COPY package.json package-lock.json ./
+# `npm ci` installs exactly what the lockfile pins, and runs the
+# better-sqlite3 build script so the native binding is compiled for Linux.
+RUN npm ci --no-audit --no-fund
 
 # ---- Builder ---------------------------------------------------------------
 FROM node:22-bookworm-slim AS builder
