@@ -1,0 +1,26 @@
+// Prisma schema for the data-collection app.
+// Docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Submission {
+  id           String   @id @default(cuid())
+  fullName     String
+  businessName String
+  role         String
+  phone        String
+  email        String
+  businessType String
+  location     String
+  tin          String
+  createdAt    DateTime @default(now())
+
+  @@index([createdAt])
+}
