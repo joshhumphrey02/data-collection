@@ -76,8 +76,14 @@ a fresh volume initialises itself and redeploys stay in sync.
    volume mounted at `/app/data`. Keep it — deleting it deletes every
    submission.
 
-4. **Set the port and domain.** The app listens on **3000**. Add your domain in
-   the Coolify UI and it will handle HTTPS.
+4. **Set the port and domain.** The app listens on **3000**. Set that as the
+   "Ports Exposes" value in Coolify, add your domain, and Coolify's proxy
+   handles HTTPS.
+
+   The compose file deliberately has **no `ports:` mapping** — Coolify reaches
+   the container through its own proxy network. Publishing a host port causes
+   `Bind for 0.0.0.0:3000 failed: port is already allocated` when anything else
+   on the server already uses that port.
 
 5. **Health check.** `GET /api/health` returns `{"status":"ok"}` once the app
    and database are reachable; the compose file already wires it up.

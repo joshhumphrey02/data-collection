@@ -12,8 +12,11 @@ services:
       PORT: 3000
       # Coolify injects the public URL; used for absolute links if needed.
       NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
-    ports:
-      - "3000:3000"
+    # No `ports:` mapping. Coolify's proxy reaches the container over the
+    # shared network and terminates TLS for the configured domain. Publishing
+    # a host port would collide with anything else already bound to it.
+    expose:
+      - "3000"
     volumes:
       # Named volume keeps the SQLite file across redeploys.
       - data:/app/data
